@@ -11,10 +11,12 @@ pipeline{
                 }
         }
         stage("build & run"){
+            steps{
             withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'secrect', usernameVariable: 'user')]) {
          sh "docker login -u ${user} -p ${secrect}"
          sh "pwd"
 }
+            }
         }
     }
 }
