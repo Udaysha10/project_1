@@ -1,0 +1,14 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: spot-cluster1
+  region: us-east-1
+
+managedNodeGroups:
+
+# `instanceTypes` defaults to [`m5.large`]
+- name: spot-1
+  spot: true
+  ssh:
+    publicKeyName: k8s
