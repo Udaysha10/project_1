@@ -15,7 +15,8 @@ pipeline{
                 docker{image "node:16-alpine"}
             }
             steps{
-            sh "node --version"
+            sh "pwd && node --version"
+            sh "npm update -y"
             
             }
         }
