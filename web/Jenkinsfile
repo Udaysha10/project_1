@@ -11,13 +11,17 @@ pipeline{
                 }
         }
         stage("build & run"){
+            agent{
+                docker{image "node:16-alpine"}
+            }
             steps{
             sh '''
             pwd
-            docker build -t udaysha10/web:${BUILD_NUMBER} .
-            docker run -t -d --name web-${BUILD_NUMBER} -p 80:80 udaysha10/web:${BUILD_NUMBER}
+            whoami
+            node --version
             '''
             }
         }
+        
     }
 }
