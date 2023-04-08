@@ -1,14 +1,20 @@
 pipeline{
-    agent{
-        docker{image "nginx"}
-    }
+    agent any
     stages{
         stage("checkout"){
             steps{
-                echo "${BUILD_NUMBER}"
+                echo "${BUILD_NUMBER} is running"
                 sh "git --version"
                 sh "whoami"
-            }
+                sh "pwd"
+                git branch: 'main', credentialsId: 'github', url: 'https://github.com/Udaysha10/project_1.git'
+                }
+        }
+        stage("build & run"){
+            withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'secrect', usernameVariable: 'user')]) {
+         sh "docker login -u ${user} -p ${secrect}"
+         sh "pwd"
+}
         }
     }
 }
