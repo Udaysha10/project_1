@@ -1,0 +1,13 @@
+pipeline{
+    agent{
+        docker{image "nginx"}
+    }
+    stages{
+        stage("checkout"){
+            steps{
+                sh "echo "$BUILD_NUMBER"
+                sh "git --version"
+            }
+        }
+    }
+}
