@@ -14,6 +14,7 @@ pipeline{
             steps{
             withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'secrect', usernameVariable: 'user')]) {
          sh '''
+         pwd
          docker build -t udaysha10/web:${BUILD_NUMBER} .
          docker run -t -d --name web-${BUILD_NUMBER} -p 8081:80 udaysha10/web:${BUILD_NUMBER}
          '''
