@@ -3,7 +3,7 @@ pipeline{
     stages{
         stage("checkout"){
             steps{
-                sh "echo "${BUILD_NUMBER}"
+                echo "${BUILD_NUMBER}"
                 sh "git --version"
                 sh "whoami"
             }
