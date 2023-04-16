@@ -1,52 +1,60 @@
 ---
-apiVersion: v1
+apiVersion: v1 
 kind: Service
 metadata:
-  name: nginx
+  name: mongodb
   labels:
-    app: nginx
+    app: mongodb
+    type: mongo-service
 spec:
+  clusterIP: None  # headless service will get all ips of replicas each time
+  selector:
+    app: mongodb
+    type: mongo-service
   ports:
   - port: 27017
     targetPort: 27017
-    name: web
-  clusterIP: None #headless service
-  selector:
-    app: nginx
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: web
-spec:
-  selector:
-    matchLabels:
-      app: nginx # has to match .spec.template.metadata.labels
-  serviceName: "nginx"
-  replicas: 3 # by default is 1
-  minReadySeconds: 10 # by default is 0
+  name: mongodb
+ spec: # define pods template here
   template:
     metadata:
-      labels:
-        app: nginx # has to match .spec.selector.matchLabels
+      name: mongodb-pod
+      labels: # pod labels
+        app: mongodb-pod
+        tier: db        
     spec:
-      terminationGracePeriodSeconds: 10
       containers:
-      - name: nginx
+      - name: mongodb
         image: udaysha10/mongodb:k8
+        imagePullPolicy: Always
         ports:
         - containerPort: 27017
-          name: web
         volumeMounts:
-        - name: www
+        - name: mongo-pvc
           mountPath: /data/db
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mongodb-pod
+      tier: db
+  serviceName: mongodb
+  minReadySeconds: 10
+  # strategy:
+  #   type: rollingUpdate
+  #   rollingUpdate:
+  #     maxUnavailable: 1
+  #     maxSurge: 1
   volumeClaimTemplates:
   - metadata:
-      name: www
+      name: mongo-pvc
     spec:
-      accessModes: [ "ReadWriteOnce" ]
+      accessModes: ["ReadWriteOnce"]
       storageClassName: "ebs-sc"
       resources:
         requests:
-          storage: 1Gi
+          storage: 6Gi
 ---
