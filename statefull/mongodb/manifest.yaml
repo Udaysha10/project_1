@@ -12,9 +12,9 @@ spec:
     name: mongodb
     type: mongo-service
   ports:
-  - name: servicePort
+  - name: service-port
     port: 27017
-  - name: containerPort
+  - name: container-port
     targetPort: 27017
 ---
 apiVersion: apps/v1
@@ -53,7 +53,7 @@ spec: # define pods template here
     rollingUpdate:
       maxUnavailable: 1
       maxSurge: 1
-  volumeClaimTemplate:
+  volumeClaimTemplates:
   - metadata:
       name: mongo-volume
     spec:
