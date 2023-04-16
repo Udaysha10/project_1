@@ -19,7 +19,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mongodb
- spec: # define pods template here
+spec: # define pods template here
   template:
     metadata:
       name: mongodb-pod
