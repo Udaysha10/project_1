@@ -1,69 +1,52 @@
----
-apiVersion: v1 
+apiVersion: v1
 kind: Service
 metadata:
   name: mongodb
+  
   labels:
-    name: mongodb
-    type: mongo-service
+    app: mongodb
 spec:
-  clusterIP: None  # headless service will get all ips of replicas each time
-  selector:
-    name: mongodb
-    type: mongo-service
   ports:
   - port: 27017
-    targetPort: 27017
+    name: mongodb
+  clusterIP: None #headless service
+  selector:
+    name: mongodb
+    tier: db
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mongodb
-  labels:
-    tier: db
-    name: mongodb   #stateful set labels
-spec: # define pods template here
+  
+spec:
+  selector:
+    matchLabels:
+      name: mongodb # has to match .spec.template.metadata.labels
+      tier: db
+  serviceName: "mongodb"
+  replicas: 1 # by default is 1
   template:
     metadata:
-      name: mongodb-pod
-      labels: # pod labels
-        name: mongodb-pod
-        tier: db        
+      labels:
+        name: mongodb # has to match .spec.template.metadata.labels
+        tier: db
     spec:
       containers:
       - name: mongodb
-        image: udaysha10/mongodb:k8
-        imagePullPolicy: Always
+        image: techworldwithsiva/mongodb:v1
         ports:
         - containerPort: 27017
+          name: mongodb
         volumeMounts:
-        - name: mongo-volume
+        - name: mongodb-volume
           mountPath: /data/db
-      volumes:
-      - name: mongo-volume
-        persistentVolumeClaim:
-          claimName: mongo-pvc
-  replicas: 3
-  selector:
-    matchLabels:
-      name: mongodb-pod
-      tier: db
-  serviceName: mongodb
-  minReadySeconds: 10
-  # strategy:
-  #   type: rollingUpdate
-  #   rollingUpdate:
-  #     maxUnavailable: 1
-  #     maxSurge: 1
   volumeClaimTemplates:
   - metadata:
-      name: mongo-pvc
+      name: mongodb-volume
     spec:
-      accessModes: ["ReadWriteOnce"]
-      storageClassName: project-sc
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "project-sc"
       resources:
         requests:
-          storage: 6Gi
----
-
-
+          storage: 1Gi
