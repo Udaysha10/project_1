@@ -111,7 +111,7 @@ spec:
           subPath: nginx.conf 
       volumes: 
       - name: nginx-config
-        ConfigMap:
+        configMap:
           name: nginx-configmap
           items:
             - key: nginx-conf
