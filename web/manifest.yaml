@@ -108,7 +108,7 @@ spec:
         volumeMounts:
         - name: nginx-config
           mountPath: /etc/nginx/nginx.conf
-          subPathL: nginx.conf 
+          subPath: nginx.conf 
       volumes: 
       - name: nginx-config
         ConfigMap:
@@ -125,7 +125,7 @@ selector:
 apiVersion: v1 
 kind: Service
 metadata:
-  name: redis
+  name: web
 spec:
   type: LoadBalancer
   selector:
