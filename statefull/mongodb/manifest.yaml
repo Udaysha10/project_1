@@ -17,11 +17,6 @@ kind: StatefulSet
 metadata:
   name: mongodb-set
 spec: # define pods template here
-  replicas: 3
-  selector:
-    matchLabels:
-      app: mongodb-pod
-      tier: db
   serviceName: mongo-service
   template:
     metadata:
@@ -44,6 +39,11 @@ spec: # define pods template here
   #   rollingUpdate:
   #     maxUnavailable: 1
   #     maxSurge: 1
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mongodb-pod
+      tier: db
   volumeClaimTemplates:
   - metadata:
       name: mongo-pvc
