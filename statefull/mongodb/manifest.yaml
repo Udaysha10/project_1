@@ -7,7 +7,8 @@ metadata:
     app: nginx
 spec:
   ports:
-  - port: 80
+  - port: 27017
+    targetPort: 27017
     name: web
   clusterIP: None #headless service
   selector:
@@ -34,7 +35,7 @@ spec:
       - name: nginx
         image: udaysha10/mongodb:k8
         ports:
-        - containerPort: 80
+        - containerPort: 27017
           name: web
         volumeMounts:
         - name: www
