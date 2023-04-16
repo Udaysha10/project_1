@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1 
+kind: StatefulSet 
+metadata:
+  name: redis-set
+spec:
+  serviceName: redis
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        pod: redis-pod
+        tier: db
+    spec:
+      containers:
+      - name: redis-cntr
+        image: redis
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+        - name: redis-pvc
+          mountPath: /data
+  selector:
+    matchLabels:
+      pod: redis-pod
+      tier: db
+  volumeClaimTemplates:
+  - metadata:
+      name: redis-pvc
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "ebs-sc"
+      resources:
+        requests:
+          storage: 1Gi
+---
+apiVersion: v1 
+kind: Service
+metadata:
+  name: redis
+spec: 
+  selector:
+    pod: redis-pod
+    tier: db
+  ports:
+  - port: 6379
+    targetPort: 6379
+  clusterIP: None
+---
+
+
+
