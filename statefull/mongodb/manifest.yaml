@@ -39,7 +39,7 @@ spec: # define pods template here
   #   rollingUpdate:
   #     maxUnavailable: 1
   #     maxSurge: 1
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: mongodb-pod
