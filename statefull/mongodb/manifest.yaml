@@ -12,46 +12,49 @@ parameters:
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx
+  name: mongodb
+  namespace: roboshop
   labels:
-    app: nginx
+    app: mongodb
 spec:
   ports:
-  - port: 80
-    name: web
+  - port: 27017
+    name: mongodb
   clusterIP: None #headless service
   selector:
-    app: nginx
+    name: mongodb
+    tier: db
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: web
+  name: mongodb
+  namespace: roboshop
 spec:
   selector:
     matchLabels:
-      app: nginx # has to match .spec.template.metadata.labels
-  serviceName: "nginx"
-  replicas: 3 # by default is 1
-  minReadySeconds: 10 # by default is 0
+      name: mongodb # has to match .spec.template.metadata.labels
+      tier: db
+  serviceName: "mongodb"
+  replicas: 1 # by default is 1
   template:
     metadata:
       labels:
-        app: nginx # has to match .spec.selector.matchLabels
+        name: mongodb # has to match .spec.template.metadata.labels
+        tier: db
     spec:
-      terminationGracePeriodSeconds: 10
       containers:
-      - name: nginx
-        image: nginx
+      - name: mongodb
+        image: techworldwithsiva/mongodb:v1
         ports:
-        - containerPort: 80
-          name: web
+        - containerPort: 27017
+          name: mongodb
         volumeMounts:
-        - name: www
-          mountPath: /usr/share/nginx/html
+        - name: mongodb-volume
+          mountPath: /data/db
   volumeClaimTemplates:
   - metadata:
-      name: www
+      name: mongodb-volume
     spec:
       accessModes: [ "ReadWriteOnce" ]
       storageClassName: "ebs-sc"
