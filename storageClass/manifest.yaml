@@ -1,0 +1,12 @@
+# dynamic driver for eks
+# kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.17"
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: project-sc
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+provisioner: kubernetes.io/aws-ebs
+parameters:
+  type: gp2
+  fsType: ext4
