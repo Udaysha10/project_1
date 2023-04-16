@@ -14,7 +14,7 @@ spec:
   ports:
   - name: servicePort
     port: 27017
-    name: containerPort
+  - name: containerPort
     targetPort: 27017
 ---
 apiVersion: v1
