@@ -2,9 +2,8 @@
 apiVersion: v1 
 kind: Service
 metadata:
-  name: mongodb
-  
-spec:
+ name: mongodb
+spec: 
   clusterIP: None  # headless service will get all ips of replicas each time
   selector:
     app: mongodb-pod
@@ -39,7 +38,6 @@ spec: # define pods template here
         volumeMounts:
         - name: mongo-pvc
           mountPath: /data/db
-  
   # minReadySeconds: 10
   # strategy:
   #   type: rollingUpdate
