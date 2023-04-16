@@ -9,6 +9,8 @@ managedNodeGroups:
 
 # `instanceTypes` defaults to [`m5.large`]
 - name: spot-1
-  spot: true
+  spot: false
+  desiredCapacity: 3
+  instanceType: t2.medium
   ssh:
     publicKeyName: k8s
