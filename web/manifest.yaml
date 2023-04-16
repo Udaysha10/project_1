@@ -72,13 +72,13 @@ data:
             #     proxy_pass http://shipping:8080/;
             # }
 
-            location /api/payment/ {
-                proxy_pass http://payment/;
-            }  
+            # location /api/payment/ {
+            #     proxy_pass http://payment/;
+            # }  
         
-            location /api/ratings/ {
-              proxy_pass http://ratings/;
-            }
+            # location /api/ratings/ {
+            #   proxy_pass http://ratings/;
+            # }
 
             location /nginx_status {
                 stub_status on;
