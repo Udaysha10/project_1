@@ -12,9 +12,7 @@ spec:
     name: mongodb
     type: mongo-service
   ports:
-  - name: service-port
-    port: 27017
-  - name: container-port
+  - port: 27017
     targetPort: 27017
 ---
 apiVersion: apps/v1
