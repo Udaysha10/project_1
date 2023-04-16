@@ -39,6 +39,10 @@ spec: # define pods template here
         volumeMounts:
         - name: mongo-volume
           mountPath: /data/db
+      volumes:
+      - name: mongo-volume
+        persistentVolumeClaim:
+          claimName: mongo-pvc
   replicas: 3
   selector:
     matchLabels:
@@ -53,7 +57,7 @@ spec: # define pods template here
   #     maxSurge: 1
   volumeClaimTemplates:
   - metadata:
-      name: mongo-volume
+      name: mongo-pvc
     spec:
       accessModes: ["ReadWriteOnce"]
       storageClassName: project-sc
