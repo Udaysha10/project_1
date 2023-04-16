@@ -1,50 +1,60 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ebs-sc
+provisioner: ebs.csi.aws.com
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
+parameters:
+  type: gp2
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongodb
+  name: nginx
   labels:
-    app: mongodb
+    app: nginx
 spec:
   ports:
-  - port: 27017
-    name: mongodb
+  - port: 80
+    name: web
   clusterIP: None #headless service
   selector:
-    name: mongodb
-    tier: db
+    app: nginx
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mongodb
+  name: web
 spec:
   selector:
     matchLabels:
-      name: mongodb # has to match .spec.template.metadata.labels
-      tier: db
-  serviceName: "mongodb"
-  replicas: 1 # by default is 1
+      app: nginx # has to match .spec.template.metadata.labels
+  serviceName: "nginx"
+  replicas: 3 # by default is 1
+  minReadySeconds: 10 # by default is 0
   template:
     metadata:
       labels:
-        name: mongodb # has to match .spec.template.metadata.labels
-        tier: db
+        app: nginx # has to match .spec.selector.matchLabels
     spec:
+      terminationGracePeriodSeconds: 10
       containers:
-      - name: mongodb
-        image: techworldwithsiva/mongodb:v1
+      - name: nginx
+        image: nginx
         ports:
-        - containerPort: 27017
-          name: mongodb
+        - containerPort: 80
+          name: web
         volumeMounts:
-        - name: mongodb-volume
-          mountPath: /data/db
+        - name: www
+          mountPath: /usr/share/nginx/html
   volumeClaimTemplates:
   - metadata:
-      name: mongodb-volume
+      name: www
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: "project-sc"
+      storageClassName: "ebs-sc"
       resources:
         requests:
           storage: 1Gi
