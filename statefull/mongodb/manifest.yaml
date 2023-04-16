@@ -46,11 +46,11 @@ spec: # define pods template here
       tier: db
   serviceName: mongodb
   minReadySeconds: 10
-  strategy:
-    type: rollingUpdate
-    rollingUpdate:
-      maxUnavailable: 1
-      maxSurge: 1
+  # strategy:
+  #   type: rollingUpdate
+  #   rollingUpdate:
+  #     maxUnavailable: 1
+  #     maxSurge: 1
   volumeClaimTemplates:
   - metadata:
       name: mongo-volume
