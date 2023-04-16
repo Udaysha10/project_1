@@ -7,7 +7,7 @@ metadata:
     name: mongodb
     type: mongo-service
 spec:
-  clusterIp: None  # headless service will get all ips of replicas each time
+  clusterIP: None  # headless service will get all ips of replicas each time
   selector:
     name: mongodb
     type: mongo-service
