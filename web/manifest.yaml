@@ -116,11 +116,11 @@ spec:
           items:
             - key: nginx-conf
               path: nginx.conf
-replicas: 3
-selector:
-  matchLabels:
-    pod: web-pod
-    tier: app
+  replicas: 3
+  selector:
+    matchLabels:
+      pod: web-pod
+      tier: app
 ---
 apiVersion: v1 
 kind: Service
