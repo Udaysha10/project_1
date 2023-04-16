@@ -12,7 +12,7 @@ kind: Deployment
 metadata:
   name: user-deploy
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       name: user

@@ -117,7 +117,7 @@ spec:
           items:
             - key: nginx-conf
               path: nginx.conf
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       pod: web-pod
