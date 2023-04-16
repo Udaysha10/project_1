@@ -40,7 +40,7 @@ spec:
         ports:
         - containerPort: 3306
         volumeMounts:
-          name: sql-pvc
+        - name: sql-pvc
           mountPath: /var/lib/mysql
   serviceName: mysql
   selector:
