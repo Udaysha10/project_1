@@ -2,7 +2,7 @@
 apiVersion: v1 
 kind: Service
 metadata:
- name: mongo-service
+ name: mongodb
 spec: 
   clusterIP: None  # headless service will get all ips of replicas each time
   selector:
@@ -17,7 +17,7 @@ kind: StatefulSet
 metadata:
   name: mongodb-set
 spec: # define pods template here
-  serviceName: mongo-service
+  serviceName: mongodb
   template:
     metadata:
       labels: # pod labels
@@ -25,7 +25,7 @@ spec: # define pods template here
         tier: db        
     spec:
       containers:
-      - name: mongodb
+      - name: mongodb-cntr
         image: udaysha10/mongodb:k8
         imagePullPolicy: Always
         ports:
@@ -52,5 +52,5 @@ spec: # define pods template here
       storageClassName: "ebs-sc"
       resources:
         requests:
-          storage: 6Gi
+          storage: 1Gi
 ---
