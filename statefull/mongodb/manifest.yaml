@@ -1,0 +1,67 @@
+---
+apiVersion: v1 
+kind: Service
+metadata:
+  name: mongodb
+  labels:
+    name: mongodb
+    type: mongo-service
+spec:
+  clusterIp: None  # headless service will get all ips of replicas each time
+  selector:
+    name: mongodb
+    type: mongo-service
+  ports:
+  - name: servicePort
+    port: 27017
+    name: containerPort
+    targetPort: 27017
+---
+apiVersion: v1
+kind: StatefulSet
+metadata:
+  name: mongodb
+  labels:
+    tier: db
+    name: mongodb   #stateful set labels
+spec: # define pods template here
+  template:
+    metadata:
+      name: mongodb-pod
+      labels: # pod labels
+        name: mongodb-pod
+        tier: db        
+    spec:
+      containers:
+      - name: mongodb
+        image: udaysha10/mongodb:k8
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: mongo-volume
+          mountPath: /data/db
+  replicas: 3
+  selector:
+    matchLabels:
+      name: mongodb-pod
+      tier: db
+  serviceName: mongodb
+  minReadySeconds: 10
+  strategy:
+    type: rollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  volumeClaimTemplate:
+  - metadata:
+      name: mongo-volume
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: project-sc
+      resources:
+        requests:
+          storage: 6Gi
+---
+
+
