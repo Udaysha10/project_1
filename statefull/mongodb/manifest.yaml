@@ -9,8 +9,8 @@ metadata:
 spec:
   clusterIP: None  # headless service will get all ips of replicas each time
   selector:
-    app: mongodb
-    type: mongo-service
+    app: mongodb-pod
+    tier: db 
   ports:
   - port: 27017
     targetPort: 27017
