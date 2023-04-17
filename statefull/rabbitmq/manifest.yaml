@@ -1,0 +1,56 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: rabbitmq-set
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: rabbitmq-pod
+      labels:
+        app: rabbitmq
+        tier: db
+    spec:
+      containers:
+      - name: rabbitmq-cntr
+        image: rabbitmq
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 5672
+          - containerPort: 15672
+        volumeMounts:
+        - name: rabbitmq-pvc
+          mountPath: /var/lib/rabbitmq
+  selector:
+    matchLabels:
+      app: rabbitmq
+      tier: db
+  serviceName: rabbitmq
+  volumeClaimTemplates:
+  - metadata:
+      name: rabbitmq-pvc
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "ebs-sc"
+      resources:
+        requests:
+          storage: 1Gi
+---
+apiVersion: v1 
+kind: Service
+metadata:
+  name: rabbitmq
+spec:
+  selector:
+    app: rabbitmq
+    tier: db
+  ports:
+    - port: 5672
+      name: amqp
+    - port: 15672
+      name: http
+  clusterIP: None
+---
+
+
