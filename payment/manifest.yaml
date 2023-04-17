@@ -14,7 +14,7 @@ kind: Deployment
 metadata:
   name: payment-deploy
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       tier: app

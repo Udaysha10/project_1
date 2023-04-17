@@ -60,21 +60,21 @@ data:
                 proxy_pass http://user/;
             }  
 
-            # location /api/cart/ {
-            #     proxy_pass http://cart/;
-            # }
+            location /api/cart/ {
+                proxy_pass http://cart/;
+            }
 
-            # location /api/shipping/ {
-            #     proxy_pass http://shipping/;
-            # }
+            location /api/shipping/ {
+                proxy_pass http://shipping/;
+            }
 
             # location /api/shipping/ {
             #     proxy_pass http://shipping:8080/;
             # }
 
-            # location /api/payment/ {
-            #     proxy_pass http://payment/;
-            # }  
+            location /api/payment/ {
+                proxy_pass http://payment/;
+            }  
         
             # location /api/ratings/ {
             #   proxy_pass http://ratings/;

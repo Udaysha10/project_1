@@ -12,7 +12,7 @@ kind: Deployment
 metadata:
   name: cart-deploy
 spec:
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       name: cart-pod
