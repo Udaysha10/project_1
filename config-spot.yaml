@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: spot1-cluster
+  name: spot2-cluster
   region: us-east-1
 
 managedNodeGroups:
@@ -10,7 +10,7 @@ managedNodeGroups:
 # `instanceTypes` defaults to [`m5.large`]
 - name: spot-1
   spot: false
-  desiredCapacity: 3
+  desiredCapacity: 1
   instanceType: t2.medium
   ssh:
     publicKeyName: k8s
