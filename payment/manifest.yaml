@@ -1,0 +1,52 @@
+---
+apiVersion: v1 
+kind: ConfigMap
+metadata:
+  name: payment-config
+data:
+  CART_HOST: "cart:80"
+  AMQP_HOST: "rabbitmq"
+  USER_HOST: "user"
+
+---
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: payment-deploy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      tier: app
+      name: payment 
+  template: 
+    metadata:
+      name: payment-pod
+      labels:
+        tier: app
+        name: payment 
+    spec:
+      containers:
+      - name: payment-cntr
+        image: udaysha10/payment:k8
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        envFrom:
+        - configMapRef:
+            name: payment-config
+---
+apiVersion: v1 
+kind: Service
+metadata:
+  name: payment
+spec:
+  selector:
+    tier: app
+    name: payment
+  ports:
+   - protocol: TCP
+     port: 80
+     targetPort: 8080
+---
+

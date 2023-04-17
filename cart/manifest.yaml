@@ -1,0 +1,49 @@
+---
+apiVersion: v1 
+kind: ConfigMap
+metadata:
+  name: cart-config
+data:
+  REDIS_HOST: "redis"
+  CATALOGUE_HOST: "catalogue"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cart-deploy
+spec:
+  replicas: 3
+  template:
+    metadata:
+      name: cart-pod
+      labels:
+          app: cart-pod
+          tier: front
+    spec:
+      containers:
+      - name: cart-cntr
+        image: udaysha10/cart:k8
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: cart-config
+  selector:
+    matchLabels:
+      app: cart-pod
+      tier: front
+---
+apiVersion: v1 
+kind: Service
+metadata:
+  name: cart
+spec:
+  selector:
+    app: cart-pod
+    tier: front
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+---
+
+
