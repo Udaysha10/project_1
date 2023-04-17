@@ -32,6 +32,8 @@ spec:
       - name: mysql-cntr
         image: techworldwithsiva/mysql:k8
         imagePullPolicy: Always
+        args: 
+        - "--ignore-db-dir=lost+found"
         envFrom:
         - configMapRef:
             name: sql-config
