@@ -5,7 +5,7 @@ metadata:
   name: redis-set
 spec:
   serviceName: redis
-  replicas: 1
+  replicas: 4
   template:
     metadata:
       labels:
